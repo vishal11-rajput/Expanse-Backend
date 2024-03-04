@@ -1,0 +1,4 @@
+account and account type
+currency type also
+
+no need to make api for now.
