@@ -5,5 +5,6 @@ router.get("/expense",expenseController.getAllExpense)
 router.delete("/expense/:id",expenseController.deleteExpense)
 router.get("/expense/:id",expenseController.getExpenseById)
 router.put("/expense/:id",expenseController.updateExpense)
+router.post("/upload", expenseController.billUpload)
 
 module.exports = router;

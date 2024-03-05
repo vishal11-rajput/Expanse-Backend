@@ -1,4 +1,9 @@
 const ExpenseSchema = require("../Model/ExpenseModel");
+const multer = require('multer');
+const path = require('path');
+const CloudinaryController = require('../Controller/CloudinaryController');
+const { log } = require("console");
+// const { createBrotliCompress } = require("zlib");
 
 const createExpense = async(req,res)=>{
     try{
@@ -114,10 +119,62 @@ const updateExpense = async(req,res)=>{
         }
 }
 
+//for files of billing
+const storage = multer.diskStorage({
+    // destination: "./Uploads",
+    filename: function(req, file,cb){
+        cb(null,file.originalname);
+    }
+})
+
+const upload = multer({
+    storage: storage,
+    limits:{fileSize: 1000000}
+}).single('myImage')
+
+const billUpload = async(req,res) => {
+    upload(req,res, async(err) =>{
+        if(err){
+            res.status(500).json({
+                message:"File uploading error"
+            })
+        }
+        else{
+            if(req.file == undefined){
+                res.status(400).json({
+                    message: "No bill selected"
+                })
+            }
+            else{
+                // console.log(req.body)
+                const result = await CloudinaryController.uploadFile(req.file.path)
+                // console.log(result)
+                const expenseObj ={
+                    billUrl: result.secure_url,
+                    amount: req.body.amount,
+                    TransDateTime: req.body.transDateTime,
+                    category: req.body.category,
+                    paymentMethod: req.body.paymentMethod,
+                    description: req.body.description ,
+
+                }
+                const savedExpense= await ExpenseSchema.create(expenseObj)
+                res.status(200).json({
+                    message:"bill uploaded successfully",
+                    // file: `uploads/${req.file.filename}`
+                    data:savedExpense
+                })
+            }
+        }
+    })
+}
+
+
 module.exports = {
     createExpense,
     getAllExpense,
     deleteExpense,
     getExpenseById,
-    updateExpense
+    updateExpense,
+    billUpload
 }

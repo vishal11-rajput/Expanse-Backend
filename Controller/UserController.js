@@ -18,7 +18,9 @@ const createUsers = async (req, res) => {
 
 const getAllUsers = async (req, res) => {
   try {
-    const users = await UserSchema.find().populate("role");
+    // const users = await UserSchema.find().populate("role");
+    const users = await UserSchema.find();
+
     res.status(200).json({
       message: "Get all users",
       data: users,
@@ -112,19 +114,25 @@ const updateUser = async (req, res) => {
 
 const loginUser = async(req,res)=> {
   
-    const {email, password} = req.body;
-    UserSchema.findOne({email: email})
-    .then(user => {
-      if (user){
-        if(user.password === password){
-          res.json("Success")
-        } else{
-          res.json("Incorrect password")
-        }
-      }else{
-        res.json("User Login detail not found")
-      }
-    })
+
+  const email = req.body.email;
+  const password = req.body.password;
+  console.log(email,password)
+  const user = await UserSchema.findOne({email:email, password:password});
+     console.log(user)
+    if(user){
+      res.status(200).json({
+        data:user,
+        message:"Login Success"
+      })
+    }
+    else{
+      res.status(404).json({
+        data:{},
+        message:"Login Failed"
+      })
+    }
+   
   
 }
 

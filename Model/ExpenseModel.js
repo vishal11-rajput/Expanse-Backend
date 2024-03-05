@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const expenseSchemaSchema = new mongoose.Schema({
     amount:{
         type: Number,
-        // required: true
+        required: true
     },
     TransDateTime:{
         type: Date,
@@ -33,6 +33,10 @@ const expenseSchemaSchema = new mongoose.Schema({
     description:{
         type: String
     },
+    billUrl:{
+        type: String
+    },
+    
     type:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'TransactionType'

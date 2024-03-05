@@ -1,6 +1,9 @@
 const multer = require('multer');
 const path = require('path');
 
+
+
+
 const storage = multer.diskStorage({
     destination: "./Uploads",
     filename: function(req,file, cb){
@@ -8,10 +11,10 @@ const storage = multer.diskStorage({
     }
 })
 
-const upload = multer({
-    storage: storage,
-    limits:{fileSize: 1000000}
-}).single('myImage')
+// const upload = multer({
+//     storage: storage,
+//     limits:{fileSize: 1000000}
+// }).single('myImage')
 
 const fileUpload = (req,res)=>{
     upload(req,res,(err)=>{
