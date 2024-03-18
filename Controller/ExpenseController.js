@@ -7,6 +7,8 @@ const { log } = require("console");
 
 const createExpense = async(req,res)=>{
     try{
+        // const id = req.params.id;
+        const userId = req.params.id;
         const savedExpense = await ExpenseSchema.create(req.body);
         res.status(201).json({
             message: "Expense Created",
@@ -66,8 +68,8 @@ const deleteExpense = async(req,res)=>{
 
 const getExpenseById = async(req,res)=>{
     try{ 
-        const id = req.params.id
-        const expense = await ExpenseSchema.findById(id);
+        const userId = req.params.id
+        const expense = await ExpenseSchema.find({userId: userId});
         if(expense==null){
             res.status(404).json({
                 message:"Expense Type not found",
@@ -130,7 +132,7 @@ const storage = multer.diskStorage({
 const upload = multer({
     storage: storage,
     limits:{fileSize: 1000000}
-}).single('myImage')
+}).single('billImage')
 
 const billUpload = async(req,res) => {
     upload(req,res, async(err) =>{

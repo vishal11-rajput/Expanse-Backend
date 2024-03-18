@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const expenseSchemaSchema = new mongoose.Schema({
     amount:{
         type: Number,
-        required: true
+        // required: true
     },
     TransDateTime:{
         type: Date,
@@ -15,16 +15,18 @@ const expenseSchemaSchema = new mongoose.Schema({
         ref: 'Payee'
     },
     category:{
+        // type: String
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Category',
+        required: true
+    },
+    // subCategory:{
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: 'SubCategory'
+    // },
+    paymentMode:{
+        type: String,
         // required: true
-    },
-    subCategory:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'SubCategory'
-    },
-    paymentMethod:{
-        type: String
     },
     staus:{
         type: String,
@@ -40,6 +42,13 @@ const expenseSchemaSchema = new mongoose.Schema({
     type:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'TransactionType'
+    },
+
+    userId:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+
     }
 })
 
