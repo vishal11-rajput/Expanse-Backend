@@ -32,7 +32,7 @@ const getAllCategory = async (req, res) => {
         })
 
 
-    }catch(err){
+    }catch(err){    
 
         res.status(500).json({
             message:"Error in getting all Account",

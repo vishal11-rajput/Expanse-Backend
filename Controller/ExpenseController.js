@@ -66,10 +66,36 @@ const deleteExpense = async(req,res)=>{
     }
 }
 
-const getExpenseById = async(req,res)=>{
+const getExpenseByUserId = async(req,res)=>{
     try{ 
         const userId = req.params.id
-        const expense = await ExpenseSchema.find({userId: userId});
+        const expense = await ExpenseSchema.find({userId: userId}).populate("category")
+        if(expense==null){
+            res.status(404).json({
+                message:"Expense Type not found",
+                flag:-1
+            })
+        }else{
+            res.status(200).json({
+                message:"Expense Type found",
+                flag:1,
+                data:expense
+            })
+
+        }
+
+    }catch(error){
+        res.status(500).json({
+            message: " Error getting by id",
+            data: error,
+            flag: -1
+        })
+    }
+}   
+const getExpenseById = async(req,res)=>{
+    try{ 
+        const id = req.params.id
+        const expense = await ExpenseSchema.findById(id);
         if(expense==null){
             res.status(404).json({
                 message:"Expense Type not found",
@@ -176,6 +202,7 @@ module.exports = {
     createExpense,
     getAllExpense,
     deleteExpense,
+    getExpenseByUserId,
     getExpenseById,
     updateExpense,
     billUpload
